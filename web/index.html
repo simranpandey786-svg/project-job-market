@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Data-backed Upwork job market analysis, demand forecasting, and personalized recommendations.">
+  <title>MarketPulse — Job Market Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+      <a class="brand" href="#overview" aria-label="MarketPulse home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Market<span>Pulse</span></span>
+      </a>
+      <nav>
+        <a class="active" href="#overview"><span>⌂</span> Overview</a>
+        <a href="#trends"><span>⌁</span> Demand trends</a>
+        <a href="#compensation"><span>◫</span> Compensation</a>
+        <a href="#geography"><span>◎</span> Geography</a>
+        <a href="#recommend"><span>✦</span> Job matcher</a>
+        <a href="#methodology"><span>≡</span> Methodology</a>
+      </nav>
+      <div class="sidebar-note">
+        <span class="eyebrow">Dataset</span>
+        <strong id="sideRows">—</strong>
+        <small>Upwork postings analysed</small>
+        <span class="data-range" id="sideRange">Loading…</span>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <button class="menu-btn" aria-label="Toggle navigation">☰</button>
+        <div>
+          <span class="breadcrumb">Research / Job market</span>
+          <h1>Market intelligence</h1>
+        </div>
+        <div class="status-pill"><span></span> Analysis ready</div>
+      </header>
+
+      <section class="hero" id="overview">
+        <div>
+          <span class="kicker">Freelance work, decoded</span>
+          <h2>See where the market<br><em>is moving next.</em></h2>
+          <p>Salary signals, category momentum, demand forecasts, and a transparent job matcher—built from real posting data.</p>
+        </div>
+        <div class="hero-accent" aria-hidden="true">
+          <div class="orb"><span id="heroTotal">244k</span><small>postings</small></div>
+          <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Key metrics">
+        <article><span>Average hourly offer</span><strong id="avgHourly">—</strong><small>range midpoint, cleaned</small></article>
+        <article><span>Median fixed budget</span><strong id="medianBudget">—</strong><small>kept separate from hourly</small></article>
+        <article><span>Fastest-rising category</span><strong class="text-metric" id="risingCategory">—</strong><small id="risingGrowth">—</small></article>
+        <article><span>Forecast horizon</span><strong>14 days</strong><small>trend + weekly seasonality</small></article>
+      </section>
+
+      <section class="section" id="trends">
+        <div class="section-heading">
+          <div><span class="eyebrow">Demand radar</span><h2>Posting patterns over time</h2></div>
+          <div class="legend-note"><i></i> Historical <i></i> Forecast</div>
+        </div>
+        <div class="grid grid-main">
+          <article class="panel chart-panel">
+            <div class="panel-head">
+              <div><h3>High-demand role forecast</h3><p>Daily posting volume for selected categories</p></div>
+              <select id="forecastCategory" aria-label="Select category"></select>
+            </div>
+            <div class="chart-wrap chart-tall"><canvas id="forecastChart"></canvas></div>
+          </article>
+          <article class="panel pulse-panel">
+            <span class="eyebrow">Market pulse</span>
+            <h3 id="pulseTitle">Loading signal…</h3>
+            <p id="pulseCopy">Analysing recent posting velocity.</p>
+            <div class="signal-ring"><span id="pulseValue">—</span><small>growth</small></div>
+            <div class="confidence"><span>Direction signal</span><div><i id="confidenceBar"></i></div></div>
+          </article>
+        </div>
+
+        <article class="panel table-panel">
+          <div class="panel-head"><div><h3>Category scoreboard</h3><p>Volume, rates, and recent momentum</p></div><span class="tag">Live analysis</span></div>
+          <div class="table-scroll">
+            <table><thead><tr><th>Category</th><th>Postings</th><th>Share</th><th>Avg. hourly</th><th>14-day growth</th><th>Signal</th></tr></thead><tbody id="categoryTable"></tbody></table>
+          </div>
+        </article>
+      </section>
+
+      <section class="section" id="compensation">
+        <div class="section-heading"><div><span class="eyebrow">Compensation signals</span><h2>Which words move rates?</h2></div><p>Point-biserial relationship between title keywords and hourly offers.</p></div>
+        <div class="grid grid-half">
+          <article class="panel chart-panel">
+            <div class="panel-head"><div><h3>Rate premiums</h3><p>Highest positive hourly difference</p></div><span class="tag mint">Statistically tested</span></div>
+            <div class="chart-wrap"><canvas id="keywordChart"></canvas></div>
+          </article>
+          <article class="panel findings">
+            <span class="eyebrow">What the data says</span>
+            <div id="salaryFindings"></div>
+            <aside><strong>Important</strong><p>Correlation is descriptive, not causal. Experience, scope, geography, and client mix may explain part of the difference.</p></aside>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="geography">
+        <div class="section-heading"><div><span class="eyebrow">Global rates</span><h2>Hourly offers by country</h2></div><p>Countries with at least 20 valid hourly postings.</p></div>
+        <article class="panel chart-panel">
+          <div class="panel-head"><div><h3>Average hourly range midpoint</h3><p>Hover to compare average, median, and sample size</p></div><select id="countryCount" aria-label="Number of countries"><option value="10">Top 10</option><option value="15" selected>Top 15</option><option value="25">Top 25</option></select></div>
+          <div class="chart-wrap map-chart"><canvas id="countryChart"></canvas></div>
+        </article>
+        <div class="grid grid-half compact-grid">
+          <article class="panel remote-card"><span class="eyebrow">Remote landscape</span><div class="remote-stat"><strong id="remoteShare">—</strong><span>of titles explicitly mention remote work</span></div><p id="remoteTrend">—</p><small>Because Upwork itself is remote-friendly, this is a conservative language signal—not the true share of remote work.</small></article>
+          <article class="panel scenario-card"><span class="eyebrow">Future scenarios</span><div id="scenarios"></div></article>
+        </div>
+      </section>
+
+      <section class="section" id="recommend">
+        <div class="section-heading"><div><span class="eyebrow">Personal job matcher</span><h2>Turn market data into your shortlist</h2></div><p>Recommendations are scored transparently in your browser.</p></div>
+        <div class="recommender">
+          <form id="recommendForm" class="filter-panel">
+            <label>Skills or keywords<input id="skills" type="text" placeholder="e.g. React, Python, SEO" autocomplete="off"></label>
+            <label>Preferred category<select id="jobCategory"><option value="">Any category</option></select></label>
+            <label>Client country<input id="jobCountry" type="text" placeholder="e.g. United States"></label>
+            <label>Minimum hourly rate<input id="minRate" type="number" min="0" max="300" placeholder="$ / hour"></label>
+            <button type="submit">Find my matches</button>
+            <small>Skill match 55% · category 25% · rate 15% · recency 5%</small>
+          </form>
+          <div class="results-panel">
+            <div class="panel-head"><div><h3>Recommended jobs</h3><p id="resultSummary">Enter a skill or choose a category to personalize results.</p></div><span class="tag" id="resultCount">0 matches</span></div>
+            <div id="jobResults" class="job-results"><div class="empty-state"><span>✦</span><p>Your strongest matches will appear here.</p></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="methodology">
+        <div class="section-heading"><div><span class="eyebrow">Trust the process</span><h2>Methods, metrics & limits</h2></div><p>Every headline number has a documented rule behind it.</p></div>
+        <div class="grid grid-half">
+          <article class="panel method-list" id="methodList"></article>
+          <article class="panel model-card">
+            <div class="panel-head"><div><h3>Forecast model accuracy</h3><p>Chronological holdout; lower MAE is better</p></div></div>
+            <div class="table-scroll"><table><thead><tr><th>Category</th><th>MAE</th><th>RMSE</th><th>R²</th></tr></thead><tbody id="modelTable"></tbody></table></div>
+            <p class="model-note">A negative R² means a simple recent average can outperform this short-window linear model. Those results are shown—not hidden—so forecasts can be judged honestly.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer><span>MarketPulse</span><p>Built from <strong id="footerRows">—</strong> freelance job postings · Dataset is historical; links may no longer be active.</p></footer>
+    </main>
+  </div>
+  <script src="assets/chart.umd.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

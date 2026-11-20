@@ -1,0 +1,12 @@
+{
+  "name": "job-market-intelligence",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Interactive Upwork job market analysis and recommendation dashboard",
+  "scripts": {
+    "build": "python3 build.py"
+  },
+  "dependencies": {
+    "chart.js": "4.5.1"
+  }
+}
